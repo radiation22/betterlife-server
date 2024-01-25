@@ -34,6 +34,7 @@ async function run() {
     const othersCollection = client.db("betterlife").collection("others");
     const partnerCollection = client.db("partner").collection("others");
     const visitCollection = client.db("betterlife").collection("view");
+    const callCollection = client.db("betterlife").collection("call");
     app.get("/api/visits", async (req, res) => {
       try {
         const visitDocument = await visitCollection.findOne();
@@ -94,6 +95,12 @@ async function run() {
     app.post("/individual", async (req, res) => {
       const review = req.body;
       const result = await individualCollection.insertOne(review);
+
+      res.send(result);
+    });
+    app.post("/callBook", async (req, res) => {
+      const review = req.body;
+      const result = await callCollection.insertOne(review);
 
       res.send(result);
     });
