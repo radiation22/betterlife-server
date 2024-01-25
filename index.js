@@ -78,6 +78,13 @@ async function run() {
       const ticket = await cursor.toArray();
       res.send(ticket);
     });
+
+    app.delete("/deleteBlog/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await blogCollection.deleteOne(query);
+      res.send(result);
+    });
     // get method for finding the specific user only
     app.get("/users", async (req, res) => {
       const email = req.query.email;
