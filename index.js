@@ -46,6 +46,25 @@ async function run() {
       }
     });
 
+    app.put("/updateBlog/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateUser = req.body;
+      console.log(updateUser);
+
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          imageUrl: updateUser.bankName,
+          category: updateUser.branchName,
+          title: updateUser.accountName,
+          description: updateUser.accountNumber,
+        },
+      };
+      const result = await blogCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
+
     app.post("/api/visits/increment", async (req, res) => {
       try {
         let visitDocument = await visitCollection.findOne();
@@ -54,7 +73,7 @@ async function run() {
           await visitCollection.insertOne(visitDocument);
         }
 
-        visitDocument.count += 5;
+        visitDocument.count += 2;
         console.log(visitDocument.count);
         await visitCollection.updateOne(
           {},
